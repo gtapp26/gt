@@ -64,18 +64,7 @@
   max-width: 300px;
   margin: 20px auto 6px auto;
   text-align: center;
-  display: none; /*  oculto por defecto */
-}
-
-.native-ad iframe {
-  display: block;
-  margin: 0 auto;
-}
-
-/* cuando realmente hay anuncio */
-.native-ad:has(iframe) {
-  display: block;
-}
+    }
   </style>
 </head>
 <body>
@@ -111,6 +100,20 @@
 </script>
 <script src="https://www.highperformanceformat.com/61b1879c59f14c39d44a4af196aa26b1/invoke.js"></script>
   </div>
+
+<script>
+  setTimeout(function () {
+    const ad = document.getElementById('ad-slot');
+    if (!ad) return;
+
+    const iframe = ad.querySelector('iframe');
+
+    // Si no hay iframe o su altura es mínima → ocultar
+    if (!iframe || iframe.offsetHeight < 50) {
+      ad.style.display = 'none';
+    }
+  }, 1500);
+</script>
 
 </body>
 </html>
