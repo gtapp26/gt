@@ -61,10 +61,14 @@
     }
 
     .native-ad {
-  max-width: 300px;
-  margin: 20px auto 6px auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 20px;
+  width: 300px;
   text-align: center;
     }
+    
   </style>
 </head>
 <body>
@@ -100,20 +104,6 @@
 </script>
 <script src="https://www.highperformanceformat.com/61b1879c59f14c39d44a4af196aa26b1/invoke.js"></script>
   </div>
-
-<script>
-  setTimeout(function () {
-    const ad = document.getElementById('ad-slot');
-    if (!ad) return;
-
-    const iframe = ad.querySelector('iframe');
-
-    // Si no hay iframe o su altura es mínima → ocultar
-    if (!iframe || iframe.offsetHeight < 50) {
-      ad.style.display = 'none';
-    }
-  }, 1500);
-</script>
 
 </body>
 </html>
