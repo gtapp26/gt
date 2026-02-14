@@ -61,13 +61,21 @@
     }
 
     .native-ad {
-      max-width: 300px;
-      margin: 20px auto 6px auto;
-      text-align: center;
-      min-height: 0;
-    .native-ad:empty {
-      display: none;
-    }
+  max-width: 300px;
+  margin: 20px auto 6px auto;
+  text-align: center;
+  display: none; /*  oculto por defecto */
+}
+
+.native-ad iframe {
+  display: block;
+  margin: 0 auto;
+}
+
+/* cuando realmente hay anuncio */
+.native-ad:has(iframe) {
+  display: block;
+}
   </style>
 </head>
 <body>
