@@ -98,9 +98,9 @@ button:not(:disabled):hover{
     left: 50%;
     transform: translate(-50%, -50%);
     background: rgba(0, 0, 0, 0.9); /* Fondo semi-transparente negro */
-    z-index: 10000; /* Alto para superponerse al header y popups */
+    z-index: 2147483640; /* Alto para superponerse al header y popups */
     width: 350px;
-    height: 300px;
+    height: 350px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -141,7 +141,7 @@ button:not(:disabled):hover{
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
-    z-index: 10001; /* Sobre el iframe */
+    z-index: 2147483647; /* Sobre el iframe */
     transition: background-color var(--transition-speed);
     }
 
