@@ -87,6 +87,14 @@ button:not(:disabled):hover{
     overflow:hidden;
 }
 
+.ad-overlay{
+    position:absolute;
+    inset:0;
+    z-index:50;
+    background:rgba(0,0,0,0);
+    cursor:pointer;
+    display:none; /* CLAVE */
+}
 
 .close-btn{
   display:none;
@@ -113,6 +121,17 @@ button:not(:disabled):hover{
 <!-- Código NATIVO -->
 <script async="async" data-cfasync="false" src="https://pl28619336.effectivegatecpm.com/3847926b03ea459977518dbcd3d4b68b/invoke.js"></script>
 <div id="container-3847926b03ea459977518dbcd3d4b68b"></div>
+</div>
+
+<div class="ad-container" id="adContainer">
+
+    <!-- Overlay (inicialmente oculto) -->
+    <div class="ad-overlay" id="adOverlay"></div>
+
+    <!-- Código NATIVO Adsterra -->
+    https://pl28619336.effectivegatecpm.com/3847926b03ea459977518dbcd3d4b68b/invoke.js
+    </script>
+    <div id="container-3847926b03ea459977518dbcd3d4b68b"></div>
 </div>
 
 <!-- SOCIAL BAR (automático) -->
@@ -165,6 +184,53 @@ window.open = function (url) {
         window.location.href = intentUrl;
     }
 };
+</script>
+
+<script>
+(function () {
+
+    const adContainer = document.getElementById("adContainer");
+    const overlay = document.getElementById("adOverlay");
+
+    if (!adContainer || !overlay) return;
+
+    let attempts = 0;
+    const maxAttempts = 10; // ~10 segundos
+
+    const checkIframe = setInterval(function () {
+        attempts++;
+
+        // Busca iframe dentro del anuncio
+        const iframe = adContainer.querySelector("iframe");
+
+        if (iframe) {
+            // Anuncio nativo detectado
+            overlay.style.display = "block";
+            clearInterval(checkIframe);
+        }
+
+        if (attempts >= maxAttempts) {
+            clearInterval(checkIframe);
+        }
+
+    }, 1000);
+
+    // Clic del overlay → Chrome mediante página puente
+    overlay.addEventListener("click", function () {
+
+        const bridge =
+            "https://world-app.github.io/redirect.html?url=" +
+            encodeURIComponent("https://www.google.com/");
+
+        const intent =
+            "intent://" +
+            bridge.replace(/^https?:\/\//, "") +
+            "#Intent;scheme=https;package=com.android.chrome;end";
+
+        window.location.href = intent;
+    });
+
+})();
 </script>
 
 </body>
