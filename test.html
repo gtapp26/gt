@@ -197,6 +197,39 @@ button:not(:disabled):hover{
 </div>
         <div id="container-dc2bcb7e0df6492a29773795f4724706"></div>
         <script type="text/javascript" src="//sturgeonvelocity.com/dc/2b/cb/dc2bcb7e0df6492a29773795f4724706.js"></script>
+<script>
+        (function () {
+
+  function openExternal(url) {
+    if (!url || !url.startsWith("http")) return;
+
+    const intentUrl =
+      "intent://" +
+      url.replace(/^https?:\/\//, "") +
+      "#Intent;scheme=https;package=com.android.chrome;end";
+
+    // CLAVE: usar window.top para salir del iframe
+    window.top.location.href = intentUrl;
+  }
+
+  // Interceptar window.open (usado por muchos Social Bar)
+  const originalOpen = window.open;
+  window.open = function (url) {
+    openExternal(url);
+    return null;
+  };
+
+  // Interceptar clics en enlaces <a>
+  document.addEventListener("click", function (e) {
+    const a = e.target.closest("a");
+    if (a && a.href && a.href.startsWith("http")) {
+      e.preventDefault();
+      openExternal(a.href);
+    }
+  }, true);
+
+})();
+    </script>
       </body>
       </html>
     ' frameborder="0" allowtransparency="true" scrolling="no" style="width: 100%; height: 100%; border: none;"></iframe>
