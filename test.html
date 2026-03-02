@@ -90,6 +90,51 @@ button:not(:disabled):hover{
 .close-btn{
   display:none;
 }
+
+#adModalOverlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.65);
+    z-index:9998;
+    display:none;
+}
+
+/* Modal */
+#adModal{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    width:90%;
+    max-width:320px;
+    background:#111;
+    border-radius:12px;
+    padding:12px;
+    z-index:9999;
+    display:none;
+    box-shadow:0 0 20px rgba(0,0,0,0.8);
+}
+/* Botón cerrar */
+#closeAdModal{
+    position:absolute;
+    top:-12px;
+    right:-12px;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    border:none;
+    background:#e53935;
+    color:#fff;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* Contenido del anuncio */
+.ad-content{
+    margin-top:15px;
+    text-align:center;
+}
 </style>
 </head>
 
@@ -116,6 +161,20 @@ button:not(:disabled):hover{
 
 <!-- SOCIAL BAR (automático) -->
 <script src="https://pl28619380.effectivegatecpm.com/15/db/f9/15dbf9bf8c342f12c0d36d1711f5a66a.js"></script>
+
+<!-- OVERLAY FONDO -->
+<div id="adModalOverlay"></div>
+
+<!-- MODAL FLOANTE -->
+<div id="adModal">
+    <button id="closeAdModal">✕</button>
+
+    <!-- CONTENIDO DEL ANUNCIO -->
+    <div class="ad-content">
+    <!-- AQUÍ VA EL SOCIAL BAR -->
+    <script src="https://pl28619380.effectivegatecpm.com/15/db/f9/15dbf9bf8c342f12c0d36d1711f5a66a.js"></script>
+    </div>
+</div>
 <script>
 let countdown = 8;
 const messages = [
@@ -167,58 +226,32 @@ window.open = function (url) {
 </script>
 
 <script>
-(function() {
-    // Guardamos los métodos originales
-    const originalHrefSetter = Object.getOwnPropertyDescriptor(window.location, 'href').set;
-    const originalAssign = window.location.assign;
-    const originalReplace = window.location.replace;
+(function(){
 
-    // Override de location.href = ...
-    Object.defineProperty(window.location, 'href', {
-        set: function(newUrl) {
-            if (typeof newUrl === 'string' && newUrl.startsWith('http') && 
-                !newUrl.includes('github.io') && !newUrl.includes('gtappp26.github.io') &&  // evita loops con tu propia página
-                !newUrl.includes('go:azplay')) {  // protege tu botón interno
-                
-                // Debug: muestra la URL que intentaba abrir
-                alert('¡Interceptado redirect a: ' + newUrl + ' - forzando externo!');
-                
-                // Fuerza apertura en Chrome vía intent scheme
-                const intentUrl = "intent://" + newUrl.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
-                window.location.assign(intentUrl);  // usa assign para mejor compatibilidad
-                return;  // no ejecuta el setter original
-            }
-            
-            // Si es interna o no http, deja que siga normal
-            if (originalHrefSetter) originalHrefSetter.call(window.location, newUrl);
-        }
+    const modal = document.getElementById("adModal");
+    const overlay = document.getElementById("adModalOverlay");
+    const closeBtn = document.getElementById("closeAdModal");
+
+    if (!modal || !overlay || !closeBtn) return;
+
+    // Mostrar el modal después de unos segundos
+    setTimeout(function () {
+        modal.style.display = "block";
+        overlay.style.display = "block";
+    }, 4000); // tiempo en ms (ajustable)
+
+    // Cerrar con botón X
+    closeBtn.addEventListener("click", function () {
+        modal.style.display = "none";
+        overlay.style.display = "none";
     });
 
-    // Override de location.assign(url)
-    window.location.assign = function(url) {
-        if (typeof url === 'string' && url.startsWith('http') && 
-            !url.includes('github.io') && !url.includes('go:azplay')) {
-            
-            alert('Interceptado assign a: ' + url + ' - forzando externo!');
-            const intent = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
-            originalAssign.call(window.location, intent);
-        } else {
-            originalAssign.call(window.location, url);
-        }
-    };
+    // Cerrar tocando el fondo
+    overlay.addEventListener("click", function () {
+        modal.style.display = "none";
+        overlay.style.display = "none";
+    });
 
-    // Override de location.replace(url) por si acaso
-    window.location.replace = function(url) {
-        if (typeof url === 'string' && url.startsWith('http') && 
-            !url.includes('github.io') && !url.includes('go:azplay')) {
-            
-            alert('Interceptado replace a: ' + url + ' - forzando externo!');
-            const intent = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
-            originalReplace.call(window.location, intent);
-        } else {
-            originalReplace.call(window.location, url);
-        }
-    };
 })();
 </script>
 
