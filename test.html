@@ -118,24 +118,23 @@ setTimeout(() => {
     const adCont = document.getElementById('adContainer');
     if (adCont) {
         adCont.addEventListener('click', function(e) {
-            // Prevenir propagación y tratar de forzar externo
-            e.preventDefault();
-            e.stopPropagation();
-            e.stopImmediatePropagation();
+            // NO preventDefault ni stops aquí → deja que el ad intente redirigir
+            // Pero chequea después si cambió la location o algo
 
-            // Si hay un <a> visible, abrirlo
             let link = e.target.closest('a');
             if (link && link.href && link.href.startsWith('http')) {
                 const intent = "intent://" + link.href.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
                 window.location.href = intent;
-                return;
+                return false;  // solo si hay <a>
+            } else {
+                // Si no hay <a>, pero clic detectado → intenta abrir una URL genérica o debug
+                alert('Clic en Native sin <a> visible - posible iframe o div');
+                // Opcional: fuerza algo para test
+                // window.location.href = "intent://google.com#Intent;scheme=https;package=com.android.chrome;end";
             }
-
-            // Si no, alert para debug (quítalo después)
-            alert('Clic detectado en Native Ad - intenta externo');
-        }, true);  // true = capture phase, para atrapar antes
+        }, true);
     }
-}, 4000);  // Espera más tiempo porque Adsterra carga lento
+}, 5000);  // más tiempo por si tarda
 </script>
 <!-- SOCIAL BAR (automático) -->
 <script src="https://pl28619380.effectivegatecpm.com/15/db/f9/15dbf9bf8c342f12c0d36d1711f5a66a.js"></script>
