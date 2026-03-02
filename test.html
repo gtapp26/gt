@@ -98,9 +98,9 @@ button:not(:disabled):hover{
     left: 50%;
     transform: translate(-50%, -50%);
     background: rgba(0, 0, 0, 0.9); /* Fondo semi-transparente negro */
-    z-index: 2147483640; /* Alto para superponerse al header y popups */
+    z-index: 10000; /* Alto para superponerse al header y popups */
     width: 350px;
-    height: 350px;
+    height: 360px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -129,20 +129,19 @@ button:not(:disabled):hover{
 #close-ad-btn {
     padding:0 !important;
     line-height:1;
-    position: fixed;
+    position: absolute;
     top: 10px;
     right: 10px;
     background-color: var(--red-btn-bg);
     color: white;
     border: none;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    font-size: 18px;
+    width: 35px;
+    height: 35px;
+    font-size: 23px;
     font-weight: bold;
     cursor: pointer;
-    z-index: 2147483647; /* Sobre el iframe */
-    pointer-events: auto;
+    z-index: 10001; /* Sobre el iframe */
     transition: background-color var(--transition-speed);
     }
 
