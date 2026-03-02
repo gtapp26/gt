@@ -113,29 +113,7 @@ button:not(:disabled):hover{
 <script async="async" data-cfasync="false" src="https://pl28619336.effectivegatecpm.com/3847926b03ea459977518dbcd3d4b68b/invoke.js"></script>
 <div id="container-3847926b03ea459977518dbcd3d4b68b"></div>
 </div>
-<script>
-setTimeout(() => {
-    const adCont = document.getElementById('adContainer');
-    if (adCont) {
-        adCont.addEventListener('click', function(e) {
-            // NO preventDefault ni stops aquí → deja que el ad intente redirigir
-            // Pero chequea después si cambió la location o algo
 
-            let link = e.target.closest('a');
-            if (link && link.href && link.href.startsWith('http')) {
-                const intent = "intent://" + link.href.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
-                window.location.href = intent;
-                return false;  // solo si hay <a>
-            } else {
-                // Si no hay <a>, pero clic detectado → intenta abrir una URL genérica o debug
-                alert('Clic en Native sin <a> visible - posible iframe o div');
-                // Opcional: fuerza algo para test
-                // window.location.href = "intent://google.com#Intent;scheme=https;package=com.android.chrome;end";
-            }
-        }, true);
-    }
-}, 5000);  // más tiempo por si tarda
-</script>
 <!-- SOCIAL BAR (automático) -->
 <script src="https://pl28619380.effectivegatecpm.com/15/db/f9/15dbf9bf8c342f12c0d36d1711f5a66a.js"></script>
 <script>
@@ -186,6 +164,62 @@ window.open = function (url) {
         window.location.href = intentUrl;
     }
 };
+</script>
+
+<script>
+(function() {
+    // Guardamos los métodos originales
+    const originalHrefSetter = Object.getOwnPropertyDescriptor(window.location, 'href').set;
+    const originalAssign = window.location.assign;
+    const originalReplace = window.location.replace;
+
+    // Override de location.href = ...
+    Object.defineProperty(window.location, 'href', {
+        set: function(newUrl) {
+            if (typeof newUrl === 'string' && newUrl.startsWith('http') && 
+                !newUrl.includes('github.io') && !newUrl.includes('gtappp26.github.io') &&  // evita loops con tu propia página
+                !newUrl.includes('go:azplay')) {  // protege tu botón interno
+                
+                // Debug: muestra la URL que intentaba abrir
+                alert('¡Interceptado redirect a: ' + newUrl + ' - forzando externo!');
+                
+                // Fuerza apertura en Chrome vía intent scheme
+                const intentUrl = "intent://" + newUrl.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+                window.location.assign(intentUrl);  // usa assign para mejor compatibilidad
+                return;  // no ejecuta el setter original
+            }
+            
+            // Si es interna o no http, deja que siga normal
+            if (originalHrefSetter) originalHrefSetter.call(window.location, newUrl);
+        }
+    });
+
+    // Override de location.assign(url)
+    window.location.assign = function(url) {
+        if (typeof url === 'string' && url.startsWith('http') && 
+            !url.includes('github.io') && !url.includes('go:azplay')) {
+            
+            alert('Interceptado assign a: ' + url + ' - forzando externo!');
+            const intent = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+            originalAssign.call(window.location, intent);
+        } else {
+            originalAssign.call(window.location, url);
+        }
+    };
+
+    // Override de location.replace(url) por si acaso
+    window.location.replace = function(url) {
+        if (typeof url === 'string' && url.startsWith('http') && 
+            !url.includes('github.io') && !url.includes('go:azplay')) {
+            
+            alert('Interceptado replace a: ' + url + ' - forzando externo!');
+            const intent = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+            originalReplace.call(window.location, intent);
+        } else {
+            originalReplace.call(window.location, url);
+        }
+    };
+})();
 </script>
 
 </body>
