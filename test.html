@@ -258,15 +258,46 @@ window.open = function (url) {
 </script>
 
 <script>
-(function(){
-  const ad = document.getElementById("ad-wrapper");
-  const close = document.getElementById("close-ad-btn");
+(function() {
+  const closeBtn = document.getElementById('close-ad-btn');
+  const adWrapper = document.getElementById('ad-wrapper');
 
-  setTimeout(()=> {
-    ad.classList.add("show");
-  }, 2000);
+  // Función para cerrar el ad (con animación suave, sin guardar en caché)
+  function closeAd() {
+    adWrapper.classList.remove('show');
+  }
 
-  close.onclick = ()=> ad.classList.remove("show");
+  // Cerrar al hacer clic en el botón "&#215;"
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Evitar que se cierre también por clic fuera
+      closeAd();
+    });
+  }
+
+  // Opcional: Cerrar al hacer clic fuera del ad (en el fondo transparente)
+  if (adWrapper) {
+    adWrapper.addEventListener('click', (e) => {
+      if (e.target === adWrapper) {
+        closeAd();
+      }
+    });
+  }
+
+  // Mostrar el ad SIEMPRE al cargar la página (con delay de 2 segundos)
+  window.addEventListener('load', function() {
+    // Delay de 2 segundos para no mostrar inmediatamente (ajusta si quieres)
+    setTimeout(function() {
+      adWrapper.classList.add('show');
+    }, 300);
+  });
+
+  // Opcional: Cerrar con tecla Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && adWrapper.classList.contains('show')) {
+      closeAd();
+    }
+  });
 })();
 </script>
 
