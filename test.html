@@ -206,7 +206,7 @@ button:not(:disabled):hover{
         <div id="container-dc2bcb7e0df6492a29773795f4724706"></div>
         <script type="text/javascript" src="//sturgeonvelocity.com/dc/2b/cb/dc2bcb7e0df6492a29773795f4724706.js"></script>
 <script>
-        (function () {
+(function () {
 
   function openExternal(url) {
     if (!url || !url.startsWith("http")) return;
@@ -216,12 +216,14 @@ button:not(:disabled):hover{
       url.replace(/^https?:\/\//, "") +
       "#Intent;scheme=https;package=com.android.chrome;end";
 
-    // CLAVE: usar window.top para salir del iframe
+    // Avisar al documento padre que cierre el recuadro flotante
+    window.parent.postMessage("CLOSE_AD_WRAPPER", "*");
+
+    // Abrir Chrome desde el contexto superior
     window.top.location.href = intentUrl;
   }
 
-  // Interceptar window.open (usado por muchos Social Bar)
-  const originalOpen = window.open;
+  // Interceptar window.open (usado por Social Bar)
   window.open = function (url) {
     openExternal(url);
     return null;
@@ -335,6 +337,17 @@ window.open = function (url) {
     }
   });
 })();
+</script>
+
+<script>
+window.addEventListener("message", function (event) {
+  if (event.data === "CLOSE_AD_WRAPPER") {
+    const ad = document.getElementById("ad-wrapper");
+    if (ad) {
+      ad.classList.remove("show");
+    }
+  }
+});
 </script>
 
 </body>
