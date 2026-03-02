@@ -113,6 +113,33 @@ button:not(:disabled):hover{
 <script async="async" data-cfasync="false" src="https://pl28619336.effectivegatecpm.com/3847926b03ea459977518dbcd3d4b68b/invoke.js"></script>
 <div id="container-3847926b03ea459977518dbcd3d4b68b"></div>
 </div>
+<script>
+(function() {
+    const originalOpen = window.open;
+    window.open = function(url) {
+        if (url && typeof url === 'string' && url.startsWith('http')) {
+            const intentUrl = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+            window.location.href = intentUrl;
+            return null;  // Evita popup real
+        }
+        return originalOpen.apply(this, arguments);
+    };
+
+    // También interceptar location.href changes (algunos ads lo usan)
+    let originalLocation = window.location.href;
+    Object.defineProperty(window.location, 'href', {
+        set: function(newUrl) {
+            if (newUrl && newUrl.startsWith('http') && !newUrl.includes('tu-dominio-o-go:azplay')) {
+                const intent = "intent://" + newUrl.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+                window.location.href = intent;  // Redirige a intent
+            } else {
+                originalLocation = newUrl;
+            }
+        },
+        get: function() { return originalLocation; }
+    });
+})();
+</script>
 <!-- SOCIAL BAR (automático) -->
 <script src="https://pl28619380.effectivegatecpm.com/15/db/f9/15dbf9bf8c342f12c0d36d1711f5a66a.js"></script>
 <script>
