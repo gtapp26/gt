@@ -92,31 +92,34 @@ button:not(:disabled):hover{
 }
 
 /* Estilos para el div flotante de publicidad (nuevo: flotante, transparente) */
-    #ad-wrapper {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente negro */
-      z-index: 10000; /* Alto para superponerse al header y popups */
-      width: 350px;
-      height: 300px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: var(--radius);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-      overflow: hidden;
-      transition: opacity var(--transition-speed), transform var(--transition-speed);
-      opacity: 0; /* Oculto inicialmente */
-      visibility: hidden;
-    }
+#ad-wrapper{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  height: 300px;
+  background: rgba(0,0,0,0.7);
+  border-radius: var(--radius);
+  z-index: 10000;
+  overflow: visible; /* CLAVE */
+}
+#ad-wrapper::before{
+  content: "";
+  position: absolute;
+  top: -100vh;
+  bottom: -100vh;
+  left: -100vw;
+  right: -100vw;
+  background: rgba(0,0,0,0.45);
+  z-index: -1;
+}
 
-    #ad-wrapper.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translate(-50%, -50%) scale(1);
-    }
+#ad-wrapper.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
 
     #ad-iframe {
       background: var(--color-card-bg); /* Fondo que coincida con el tema */
