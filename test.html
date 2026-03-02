@@ -313,28 +313,12 @@ window.open = function (url) {
     });
   }
 
-  // Opcional: Cerrar al hacer clic fuera del ad (en el fondo transparente)
-  if (adWrapper) {
-    adWrapper.addEventListener('click', (e) => {
-      if (e.target === adWrapper) {
-        closeAd();
-      }
-    });
-  }
-
   // Mostrar el ad SIEMPRE al cargar la página (con delay de 2 segundos)
   window.addEventListener('load', function() {
     // Delay de 2 segundos para no mostrar inmediatamente (ajusta si quieres)
     setTimeout(function() {
       adWrapper.classList.add('show');
-    }, 300);
-  });
-
-  // Opcional: Cerrar con tecla Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && adWrapper.classList.contains('show')) {
-      closeAd();
-    }
+    }, 400);
   });
 })();
 </script>
