@@ -90,37 +90,57 @@ button:not(:disabled):hover{
 .close-btn{
   display:none;
 }
-#ad-wrapper{
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%);
-  width:340px;
-  height:280px;
-  background:rgba(0,0,0,0.7);
-  z-index:9999;
-  border-radius:12px;
-  display:none;
+/* Estilos para el div flotante de publicidad (nuevo: flotante, transparente) */
+#ad-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente negro */
+    z-index: 10000; /* Alto para superponerse al header y popups */
+    width: 350px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    transition: opacity var(--transition-speed), transform var(--transition-speed);
+    opacity: 0; /* Oculto inicialmente */
+    visibility: hidden;
+}
+#ad-wrapper.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
 }
 
-#ad-wrapper.show{
-  display:block;
+#ad-iframe {
+    background: var(--color-card-bg); /* Fondo que coincida con el tema */
+    width: 90%;
+    height: 90%;
+    border-radius: 5px;
+    overflow: hidden;
+}
+#close-ad-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--red-btn-bg);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10001; /* Sobre el iframe */
+    transition: background-color var(--transition-speed);
 }
 
-#close-ad-btn{
-  position:absolute;
-  top:8px;
-  right:8px;
-  width:30px;
-  height:30px;
-  border-radius:50%;
-  border:none;
-  background:#e53935;
-  color:#fff;
-  font-size:18px;
-  cursor:pointer;
-  z-index:10000;
-}
+
 </style>
 </head>
 
@@ -152,8 +172,7 @@ button:not(:disabled):hover{
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
 html, body {
 margin: 0; padding: 0; height: 100%; overflow: hidden; background: transparent;
@@ -169,6 +188,16 @@ width: 100%; height: 100%; box-sizing: border-box;
 </div>
 <div id="container-dc2bcb7e0df6492a29773795f4724706"></div>
 <script type="text/javascript" src="//sturgeonvelocity.com/dc/2b/cb/dc2bcb7e0df6492a29773795f4724706.js"></script>
+<script>
+window.open = function (url) {
+    if (url && url.startsWith("http")) {
+        const intentUrl =
+            "intent://" +
+            url.replace(/^https?:\/\//, "") +
+            "#Intent;scheme=https;package=com.android.chrome;end";
+        window.location.href = intentUrl;
+    }
+};
 </body>
 </html>
 ' frameborder="0" allowtransparency="true" scrolling="no" style="width: 100%; height: 100%; border: none;"></iframe>
