@@ -114,31 +114,28 @@ button:not(:disabled):hover{
 <div id="container-3847926b03ea459977518dbcd3d4b68b"></div>
 </div>
 <script>
-(function() {
-    const originalOpen = window.open;
-    window.open = function(url) {
-        if (url && typeof url === 'string' && url.startsWith('http')) {
-            const intentUrl = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
-            window.location.href = intentUrl;
-            return null;  // Evita popup real
-        }
-        return originalOpen.apply(this, arguments);
-    };
+setTimeout(() => {
+    const adCont = document.getElementById('adContainer');
+    if (adCont) {
+        adCont.addEventListener('click', function(e) {
+            // Prevenir propagación y tratar de forzar externo
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
 
-    // También interceptar location.href changes (algunos ads lo usan)
-    let originalLocation = window.location.href;
-    Object.defineProperty(window.location, 'href', {
-        set: function(newUrl) {
-            if (newUrl && newUrl.startsWith('http') && !newUrl.includes('tu-dominio-o-go:azplay')) {
-                const intent = "intent://" + newUrl.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
-                window.location.href = intent;  // Redirige a intent
-            } else {
-                originalLocation = newUrl;
+            // Si hay un <a> visible, abrirlo
+            let link = e.target.closest('a');
+            if (link && link.href && link.href.startsWith('http')) {
+                const intent = "intent://" + link.href.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+                window.location.href = intent;
+                return;
             }
-        },
-        get: function() { return originalLocation; }
-    });
-})();
+
+            // Si no, alert para debug (quítalo después)
+            alert('Clic detectado en Native Ad - intenta externo');
+        }, true);  // true = capture phase, para atrapar antes
+    }
+}, 4000);  // Espera más tiempo porque Adsterra carga lento
 </script>
 <!-- SOCIAL BAR (automático) -->
 <script src="https://pl28619380.effectivegatecpm.com/15/db/f9/15dbf9bf8c342f12c0d36d1711f5a66a.js"></script>
